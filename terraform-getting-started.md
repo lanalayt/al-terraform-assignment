@@ -1,15 +1,49 @@
 # Getting Started with Terraform
 
-Terraform is the most popular langauge for defining and provisioning infrastructure as code (IaC).
+HashiCorp Terraform is an open-source infrastructure as code (IaC) software tool. IaC lets you manage and provision infrastructure through code rather than through a graphical user interface. This enables you to eliminate manual processes, iterate faster, and maintain consistency as your infrastructure presence grows. 
 
-To install Terraform, simply visit [Terraform.io](https://www.terraform.io/downloads.html) and download the compressed binary application executable file deliverable for your platform, machine or environment on which you like to run code and do development.
+## Learning objectives
+In this tutorial, you will learn how to: 
 
-With Terraform installed, let's dive right into it and start creating some infrastructure.
+- Install Terraform 
+- Write a Terraform configuration file to provision a Docker container 
+- Destroy resources using Terraform 
 
-Most guys find it easiest to create a new directory on there local machine and create Terraform configuration code inside it.
+## Prerequisites
+
+- [Docker Desktop installed](https://www.docker.com/products/docker-desktop/)
+- Command line experience
+
+## Install Terraform
+
+To use Terraform, you need to install it. Visit [Terraform.io](https://www.terraform.io/downloads.html), find the appropriate package for your system and download the zip archive. After downloading Terraform, unzip the package. Finally, make sure the `terraform` binary is available on your `PATH`. This process differs depending on your operating system: 
+
+- [Mac or Linux](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux)
+- [Windows](https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows)
+
+## Verify the installation
+To verify the installation worked, open a new terminal window and list the Terraform version. 
+```shell
+$ terraform -version
+```
+
+## Provision infrastructure
+Now that you've installed Terraform, you can now provision infrastructure. In this tutorial, you will use Terraform to provision an NGINX server using [Docker Desktop](https://www.docker.com/products/docker-desktop/). 
+
+After you install Docker Desktop, start the Docker app. This command opens Docker Desktop.  
+```shell
+$ open -a Docker
+```
+
+You can now begin writing Terraform configuration code. To start, create a new directory on your local machine called `terraform-demo`. 
 
 ```shell
 $ mkdir terraform-demo
+```
+
+Then, navigate into it. 
+
+```shell
 $ cd terraform-demo
 ```
 
@@ -19,7 +53,7 @@ Next, create a file for your Terraform configuration code.
 $ touch main.tf
 ```
 
-Paste the following lines into the file.
+Paste the following code into the `main.tf` file.
 
 ```hcl
 terraform {
@@ -45,24 +79,43 @@ resource "docker_image" "nginx" {
 }
 ```
 
-Initialize Terraform with the `init` command. The AWS provider will be installed. 
+Initialize Terraform with the `init` command. This command initializes the directory and downloads the necessary provider plugins so that Terraform can interact with Docker. 
 
 ```shell
 $ terraform init
 ```
 
-You shoud check for any errors. If it ran successfully, provision the resource with the `apply` command.
+Check for any errors. If the `init` command ran successfully, provision the resource with the `apply` command. Terraform will ask to confirm this action. Type `yes` and press `ENTER` to confirm. 
 
 ```shell
 $ terraform apply
 ```
 
-The command will take up to a few minutes to run and will display a message indicating that the resource was created.
+The command takes a few minutes to run. After the command completes, it displays a message indicating the resource was created. 
 
-Finally, destroy the infrastructure.
+## Validate results 
+
+To verify that your NGINX server was deployed, navigate to the Docker Desktop app. Click on `Containers/Apps` on the left side panel. Verify that your container is listed. Alternatively, run `docker ps` in the terminal to verify your container is running. 
+
+Finally, open a web browser and navigate to [localhost:80](http://localhost:80). You should see the NGINX landing page.
+
+![NGINX Landing Page in browser at localhost:80](https://lanalayt-bucket-hashi.s3.us-west-2.amazonaws.com/nginxlandingpage.png)
+
+## Clean up  
+
+Once you verified the existence of your container, destroy your infrastructure. Terraform will ask to confirm this action. Type `yes` and press `ENTER` to confirm. 
 
 ```shell
 $ terraform destroy
 ```
+After the command completes, it displays a message indicating that Terraform has destroyed all resources. 
 
-Look for a message are the bottom of the output asking for confirmation. Type `yes` and hit ENTER. Terraform will destroy the resources it had created earlier.
+## Next steps
+
+You have now safely and efficiently provisioned and destroyed an NGINX server using Docker and Terraform. Next, learn the basics of Terraform with the platform of your choice. 
+- [AWS](https://learn.hashicorp.com/collections/terraform/aws-get-started)
+- [Azure](https://learn.hashicorp.com/collections/terraform/azure-get-started)
+- [Google Cloud](https://learn.hashicorp.com/collections/terraform/gcp-get-started)
+- [OCI](https://learn.hashicorp.com/collections/terraform/oci-get-started)
+- [Terraform Cloud](https://learn.hashicorp.com/collections/terraform/cloud-get-started)
+- [Docker](https://learn.hashicorp.com/collections/terraform/docker-get-started)
